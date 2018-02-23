@@ -1,0 +1,19 @@
+.theme-item {
+    position: relative;
+    min-height: 30px;
+}
+
+.theme-item .theme-name {
+    display: inline-block;
+    padding-left: 45px;
+    text-indent: 0;
+    line-height: 30px;
+    font-size: 15px;
+}
+
+.theme-item > img {
+    left: 1px;
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+}

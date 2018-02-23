@@ -1,0 +1,30 @@
+﻿.btn {
+    text-align: left;
+    font-size: 0.8em;
+}
+div.container {
+    width: 650px;
+}
+
+.series {
+    list-style-type: none;
+    height: 35px;
+}
+
+.nav-item {
+    height: 50%;
+    width: 630px;
+}
+
+.nav-sub-item {
+    height: 50%;
+    width: 550px;
+}
+
+.tab-item-left-border {
+   border-left: 1px solid silver;
+}
+
+.nav-tabs{
+    min-height: 300px!important;
+    }

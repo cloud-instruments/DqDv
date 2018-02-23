@@ -1,0 +1,63 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset>
+                <legend>
+                    Chart Zoom and Scale
+                </legend>
+                <div class="form-group">
+                    <label>X-Axis From:</label>
+                    <dx-number-box #xAxisFrom
+                        [value]="value.xAxis?.from"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="-1000000"
+                        [max]="1000000">
+                    </dx-number-box>
+                </div>
+
+                <div class="form-group">
+                    <label>X-Axis To:</label>
+                    <dx-number-box #xAxisTo
+                        [value]="value.xAxis?.to"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="-1000000"
+                        [max]="1000000">
+                    </dx-number-box>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-12">
+            <fieldset>
+                <div class="form-group">
+                    <label>Y-Axis From:</label>
+                    <dx-number-box
+                        #yAxisFrom
+                        [value]="value.yAxis?.from"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="-1000000"
+                        [max]="1000000">
+                    </dx-number-box>
+                </div>
+                <div class="form-group">
+                    <label>Y-Axis To:</label>
+                    <dx-number-box #yAxisTo
+                        [value]="value.yAxis?.to"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="-1000000"
+                        [max]="1000000">
+                    </dx-number-box>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="onSave(xAxisFrom, xAxisTo, yAxisFrom, yAxisTo)">Save</button>
+                <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

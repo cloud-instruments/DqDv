@@ -1,0 +1,17 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="share-email">User email to share:</label>
+                <input id="share-email" type="text" class="form-control dx-texteditor-input" (change)="setEmail($event)">
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="onSave()">Save</button>
+                <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

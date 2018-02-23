@@ -1,0 +1,35 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset>
+                <legend>Voltage vs SOC</legend>
+                <div class="form-group">
+                    <label>Min Voltage:</label>
+                    <dx-number-box #chargeFrom
+                        [value]="value.chargeFrom"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="0.0001"
+                        [max]="1000000">
+                    </dx-number-box>
+                </div>
+                <div class="form-group">
+                    <label>Max Voltage:</label>
+                    <dx-number-box #chargeTo
+                        [value]="value.chargeTo"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                         [min]="0.0001"
+                        [max]="1000000">
+                    </dx-number-box>
+                </div>              
+            </fieldset>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="onSave(chargeFrom, chargeTo)">Save</button>
+                <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

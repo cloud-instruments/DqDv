@@ -1,0 +1,318 @@
+﻿<div #container *ngIf="step === 1">
+<div #toolbar class="form-group" [ngClass]="{'stick-to-top': container.getBoundingClientRect().top < toolbar.getBoundingClientRect().height}">
+    <div class="row">
+        <div class="col-md-8">
+            <button
+                class="btn btn-primary"
+                [disabled]="selected.length === 0 || selected.length > maxProjects"
+                (click)="onPlot()">
+                Plot selected<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+            </button>
+
+            <dx-button
+                hint="Refresh grid"
+                icon="refresh"
+                (onClick)="onRefresh()">
+            </dx-button>
+
+            <dx-button 
+                hint="Clean up settings"
+                icon="glyphicon glyphicon-erase"
+                (onClick)="onToggleEraseSettingsClick()">
+            </dx-button>
+
+            <dx-button 
+                hint="Stitch selected"
+                icon="glyphicon glyphicon glyphicon-film"
+                [disabled]="selected.length <= 1 || selected.length > maxProjects"
+                (onClick)="onStitch()">
+            </dx-button>
+
+            <dx-button 
+                hint="Create average plot"
+                icon="glyphicon glyphicon-stats"
+                [disabled]="!isAveragePlotCreationEnabled()"
+                (onClick)="onAverage()">
+            </dx-button>
+
+            <dx-button 
+                hint="Add view"
+                icon="glyphicon glyphicon-list-alt"
+                [disabled]="selected.length <= 0 || selected.length > maxProjects"
+                (onClick)="onView()">
+            </dx-button>
+
+            <dx-button 
+                [hint]="filterRowVisible ? 'Hide filter row' : 'Show filter row'"
+                [class.active]="filterRowVisible"
+                icon="glyphicon glyphicon-filter"
+                (onClick)="onToggleFilterRowClick()">
+            </dx-button>
+
+            <dx-button *ngIf="selected.length === 1" hint="Download file"
+                icon="download"
+                (onClick)="onProjectDownload(selected[0])">
+            </dx-button>
+
+            <app-dropdown-box #shareInstanceDropdownBox
+                [style.visibility]="(selected.length > 0 && selected.length <= maxProjects ) ? 'visible' : 'hidden' "
+                [tooltip]="'Share data'"
+                [title]="'Share data'"
+                class="app-dropdown-box">
+                <span class="app-dropdown-box-button">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="caret"></span>
+                </span>
+                <ng-template>
+                    <app-share-instance-editor class="app-dropdown-box-content"
+                        (cancel)="shareInstanceDropdownBox.toggle()"
+                        (save)="shareInstanceDropdownBox.toggle(); onShareProjectSave($event)">
+                    </app-share-instance-editor>
+                </ng-template>
+            </app-dropdown-box>
+
+        </div>
+        <div class="col-md-4 ml-md-auto">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Filter..."
+                title="Custom filter expression"
+                [(ngModel)]="customQuery"
+                (change)="grid.instance.refresh()">
+        </div>
+    </div>
+</div>
+
+<div *ngIf="selected.length > maxProjects" class="alert alert-danger">
+    Please select {{maxProjects}} projects or less
+</div>
+
+<dx-data-grid
+    [allowColumnReordering]="true"
+    [allowColumnResizing]="true"
+    columnResizingMode="widget"
+    [customizeColumns]="customizeColumns"
+    [dataSource]="dataSource"
+    [showRowLines]="true"
+    [(selectedRowKeys)]="selected"
+    (onCellPrepared)="onCellPrepared($event)"
+    (onEditingStart)="onEditingStart($event)"
+    (onEditorPreparing)="onEditorPreparing($event)"
+    (onRowPrepared)="onRowPrepared($event)"
+    (onSelectionChanged)="onSelectionChanged($event)">
+    
+    <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+
+    <dxi-column
+        [allowEditing]="false"
+        [allowSearch]="false"
+        dataField="traceId"
+        dataType="string"
+        [visible]="false">
+    </dxi-column>
+    
+    <dxi-column
+        [allowEditing]="false"
+        [allowSearch]="false"
+        dataField="ownerName"
+        dataType="string"
+        [visible]="false">
+    </dxi-column>
+
+    <dxi-column
+        dataField="name"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }"
+        width="auto">
+    </dxi-column>
+
+    <dxi-column
+        [allowEditing]="false"
+        dataField="fileName"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }">
+    </dxi-column>
+
+    <dxi-column
+        [allowEditing]="false"
+        [calculateDisplayValue]="formatFileSize"
+        calculateSortValue="fileSize"
+        dataField="fileSize"
+        dataType="number"
+        [formItem]="{ visible: false }"
+        width="auto">
+    </dxi-column>
+
+    <dxi-column
+        dataField="testName"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }">
+    </dxi-column>
+
+    <dxi-column
+        dataField="testType"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }">
+    </dxi-column>
+
+    <dxi-column
+        dataField="channel"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }">
+    </dxi-column>
+
+    <dxi-column
+        dataField="tag"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }">
+    </dxi-column>
+
+    <dxi-column
+        [allowEditing]="false"
+        [calculateFilterExpression]="calculateDateTimeFilterExpression"
+        dataField="createdAt"
+        dataType="date"
+        format="shortDateShortTime"
+        [formItem]="{ visible: false }"
+        width="auto">
+    </dxi-column>
+
+    <dxi-column
+        [allowEditing]="false"
+        [calculateFilterExpression]="calculateDateTimeFilterExpression"
+        dataField="updatedAt"
+        dataType="date"
+        format="shortDateShortTime"
+        [formItem]="{ visible: false }"
+        width="auto">
+    </dxi-column>
+
+    <dxi-column
+        caption="Mass, g."
+        dataField="mass"
+        dataType="number"
+        width="auto">
+    </dxi-column>
+    
+    <dxi-column
+        caption="Active Material Fraction"
+        dataField="activeMaterialFraction"
+        dataType="number"
+        width="auto"
+        [allowSearch]="false"
+        [visible]="false">
+    </dxi-column>
+
+    <dxi-column
+        caption="Theoretical Capacity, mAhr/g."
+        dataField="theoreticalCapacity"
+        dataType="number"
+        width="auto"
+        [allowSearch]="false"
+        [visible]="false">
+    </dxi-column>
+
+    <dxi-column
+        caption="Area, sq.cm."
+        dataField="area"
+        dataType="number"
+        width="auto">
+    </dxi-column>
+
+    <dxi-column
+        [allowEditing]="false"
+        [calculateDisplayValue]="formatNumCycles"
+        caption="# cycles"
+        dataField="numCycles"
+        dataType="number"
+        [formItem]="{ visible: false }"
+        width="auto">
+    </dxi-column>
+
+    <dxi-column
+        dataField="comments"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256, height: 100 }">
+    </dxi-column>
+
+    <dxi-column
+        [allowEditing]="false"
+        [allowSearch]="false"
+        caption="Stitched From"
+        dataField="stitchedFromNames"
+        dataType="string"
+        [visible]="false">
+    </dxi-column>
+
+    <dxo-editing
+        [allowDeleting]="true"
+        [allowUpdating]="true"
+        mode="form">
+        <dxo-form
+            [customizeItem]="customizeItem">
+        </dxo-form>
+    </dxo-editing>
+
+    <dxo-filter-row
+        [visible]="filterRowVisible">
+    </dxo-filter-row>
+
+    <dxo-grouping
+        [contextMenuEnabled]="true">
+    </dxo-grouping>
+
+    <dxo-group-panel
+        [visible]="true">
+    </dxo-group-panel>
+
+    <dxo-pager
+        [allowedPageSizes]="[10, 20, 50]"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+        [showPageSizeSelector]="true"
+        [visible]="true">
+    </dxo-pager>
+
+    <dxo-paging
+        [enabled]="true"
+        [pageSize]="10">
+    </dxo-paging>
+
+    <dxo-selection
+        mode="multiple"
+        [allowSelectAll]="false">
+    </dxo-selection>
+
+    <dxo-search-panel
+        [visible]="true">
+    </dxo-search-panel>
+
+    <dxo-state-storing
+        [enabled]="true"
+        [savingTimeout]="200"
+        storageKey="project-list-grid-state"
+        type="sessionStorage">
+    </dxo-state-storing>
+</dx-data-grid>
+</div>
+
+<div *ngIf="step === 2">
+    <app-chart-view (close)="onCloseChart()">
+    </app-chart-view>
+</div>
+
+<div *ngIf="step === 3">
+    <app-stitcher [projects]="selectedProjects" (close)="onCloseStitcher()">
+    </app-stitcher>
+</div>
+
+<div *ngIf="step === 4">
+    <app-view [projects]="selectedProjects" [plotTemplates]="plotTemplates" (close)="onCloseView()">
+    </app-view>
+</div>
+
+<div *ngIf="step === 5">
+    <app-statistic-project [projects]="selectedProjects" (close)="onCloseStitcher()">
+    </app-statistic-project>
+</div>

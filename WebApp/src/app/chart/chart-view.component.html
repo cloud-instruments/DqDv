@@ -1,0 +1,247 @@
+﻿<div class="row">
+    <div class="col-xxl-1 col-md-2">
+        <button class="btn btn-primary form-control"
+            (click)="onCloseClick()">
+            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Back
+        </button>
+    </div>
+    <div class="col-xxl-11 col-md-10">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group" role="group">
+                <button class="btn btn-secondary"
+                        title="Refresh chart"
+                        (click)="onRefresh()" role="group">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                </button>                
+                <button class="btn btn-secondary"
+                        [class.active]="(state$ | async).selectorVisible"
+                        [title]="(state$ | async).selectorVisible ? 'Hide selector' : 'Show selector'"
+                        (click)="onToggleSelectorClick()">
+                    <span class="glyphicon glyphicon-scale" aria-hidden="true"></span>
+                </button>
+                <app-dropdown-box #axisRangeDropdownBox                               
+                                  [tooltip]="'Set Axis ranges'"
+                                  [title]="'Set Axis ranges'"
+                                  class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-axis-range-editor class="app-dropdown-box-content"
+                            [value]="(state$ | async).axisRange"
+                            (cancel)="axisRangeDropdownBox.toggle()"
+                            (save)="axisRangeDropdownBox.toggle(); onAxisRangeSave($event)">
+                        </app-axis-range-editor>
+                    </ng-template>
+                </app-dropdown-box>  
+                <app-dropdown-box #stateOfChargeDropdownBox
+                                  [tooltip]="'State of charge %'"
+                                  [title]="'State of charge'"
+                                  class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-share"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-stateof-charge-editor class="app-dropdown-box-content"
+                                                    [value]="(state$ | async).stateOfCharge"
+                                                   (cancel)="stateOfChargeDropdownBox.toggle()"
+                                                   (save)="stateOfChargeDropdownBox.toggle(); onStateOfCharge($event)">
+                        </app-stateof-charge-editor>
+                    </ng-template>
+                </app-dropdown-box>   
+                <button class="btn btn-secondary"
+                    title="Clean up settings"
+                    (click)="onToggleEraseSettingsClick()">
+                    <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+                </button>
+                <app-dropdown-box #aggregationSettingsDropdownBox
+                                  tooltip="Configure simplification options" class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-equalizer"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-aggregation-settings-editor class="app-dropdown-box-content"
+                                                         [value]="(state$ | async).aggregationSettings"
+                                                         (cancel)="aggregationSettingsDropdownBox.toggle()"
+                                                         (save)="aggregationSettingsDropdownBox.toggle(); onAggregationSettingsSave($event)">
+                        </app-aggregation-settings-editor>
+                    </ng-template>
+                </app-dropdown-box>
+                <app-dropdown-box #cycleFilterDropdownBox
+                                  tooltip="Configure cycle filter" class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-filter"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-filter-editor [value]="(state$ | async).cycleFilter"
+                                           (cancel)="cycleFilterDropdownBox.toggle()"
+                                           (save)="cycleFilterDropdownBox.toggle(); onCycleFilterSave($event)">
+                        </app-filter-editor>
+                    </ng-template>
+                </app-dropdown-box>
+            </div>
+
+            <div class="btn-group pl-10">
+                <button class="btn btn-secondary"
+                        [class.active]="(state$ | async).legendVisible"
+                        [title]="(state$ | async).legendVisible ? 'Hide legend' : 'Show legend'"
+                        (click)="onToggleLegendClick()">
+                    <span class="glyphicon glyphicon-text-color" aria-hidden="true"></span>
+                </button>
+                <app-dropdown-box #uomSettingsDropdownBox
+                                  tooltip="Configure measurement units" class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-stats"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-uom-settings-editor class="app-dropdown-box-content"
+                                                 [value]="(state$ | async).uomSettings"
+                                                 (cancel)="uomSettingsDropdownBox.toggle()"
+                                                 (save)="uomSettingsDropdownBox.toggle(); onUomSettingsSave($event)">
+                        </app-uom-settings-editor>
+                    </ng-template>
+                </app-dropdown-box>
+                <app-dropdown-box #settingsDropdownBox
+                                  tooltip="Configure chart settings" class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-chart-settings-editor class="app-dropdown-box-content"
+                                                   [value]="(state$ | async).chartSettings"
+                                                   [chart]="(state$ | async).chart"
+                                                   [label]="(state$ | async).label"
+                                                   [legendVisible]="(state$ | async).legendVisible"
+                                                   (cancel)="settingsDropdownBox.toggle()"
+                                                   (save)="settingsDropdownBox.toggle(); onChartSettingsSave($event)">
+                        </app-chart-settings-editor>
+                    </ng-template>
+                </app-dropdown-box>
+                <app-dropdown-box #seriesDropdownBox
+                                  tooltip="Configure series" class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-series-editor class="app-dropdown-box-content"
+                                           [chartSeries]="(state$ | async).chart.series"
+                                           (cancel)="seriesDropdownBox.toggle()"
+                                           (save)="seriesDropdownBox.toggle(); onSeriesSave($event)">
+                        </app-series-editor>
+                    </ng-template>
+                </app-dropdown-box>
+                <app-dropdown-box #addtemplatesDropdownBox
+                                  tooltip="Configure plot templates" class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-wrench"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-custom-template-editor class="app-dropdown-box-content"
+                                                    [plotTemplates]="(state$ | async).plotTemplates"
+                                                    [plotParameters]="(state$ | async).chart?.plotParameters"
+                                                    (cancel)="addtemplatesDropdownBox.toggle()"
+                                                    (apply)="addtemplatesDropdownBox.toggle(); onPlotTemplateSelected($event)"
+                                                    (delete)="addtemplatesDropdownBox.toggle(); onPlotTemplateDeleted($event)"
+                                                    (save)="addtemplatesDropdownBox.toggle(); onPlotTemplateSave($event)">
+                        </app-custom-template-editor>
+                    </ng-template>
+                </app-dropdown-box>
+            </div>
+
+            <div class="btn-group pl-10">
+                <button class="btn btn-secondary"
+                    [disabled]="(state$ | async).exporting"
+                    title="Export Filtered to Excel"
+                    (click)="onExport()">
+                    <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
+                </button>
+                <button class="btn btn-secondary"
+                    [disabled]="(state$ | async).exporting"
+                    title="Export All to Excel"
+                    (click)="onExportAll()">
+                    <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                </button>
+                <app-dropdown-box #exportChartToImageDropdownBox
+                    tooltip="Export Chart Image" class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="dx-icon dx-icon-menu"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <li class="dropdown-item"><a style="cursor: pointer" (click)="onPrintChart()">Print</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li *ngFor="let type of ['PDF','PNG', 'JPEG', 'GIF']" style="cursor: pointer" class="dropdown-item">
+                            <a (click)="onExportChart(type)">{{type}} file</a>
+                        </li>
+                    </ng-template>
+                </app-dropdown-box>
+                <app-dropdown-box #shareInstanceDropdownBox
+                                  *ngIf="shareVisible"
+                                  [tooltip]="'Share data'"
+                                  [title]="'Share data'"
+                                  class="app-dropdown-box">
+                    <span class="app-dropdown-box-button">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="caret"></span>
+                    </span>
+                    <ng-template>
+                        <app-share-instance-editor class="app-dropdown-box-content"
+                                                   (cancel)="shareInstanceDropdownBox.toggle()"
+                                                   (save)="shareInstanceDropdownBox.toggle(); onShareSave($event)">
+                        </app-share-instance-editor>
+                    </ng-template>
+                </app-dropdown-box>             
+            </div>
+        </div>    
+    </div>
+    
+</div>
+
+<div class="row top-buffer">
+    <div class="col-xxl-1 col-md-2" *ngIf="displaySystemPlotSelector">
+        <app-plot-type-selector
+            [value]="(state$ | async).plotType"
+            [averagePlotsOnly]="hasAverageProjects"
+            (change)="setPlotType($event)">
+        </app-plot-type-selector>
+    </div>
+    <div [ngClass]="{'col-xxl-11 col-md-10': displaySystemPlotSelector, 'col': !displaySystemPlotSelector}">
+        <div *ngIf="refreshErrorVisible" class="alert alert-danger alert-dismissible text-center" role="alert">
+            <button type="button" class="close" aria-label="Close" (click)="refreshErrorVisible = false">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            Refresh failed. {{refreshErrorReason}}
+        </div>
+        <div *ngIf="exportErrorVisible" class="alert alert-danger alert-dismissible text-center" role="alert">
+            <button type="button" class="close" aria-label="Close" (click)="exportErrorVisible = false">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            Export failed
+        </div>
+
+        <div *ngIf="(state$ | async).chart?.forcedEveryNthCycle" class="alert alert-danger">
+            Caution: "To improve performance we have filtered every {{(state$ | async).chart?.forcedEveryNthCycle}}th cycle"
+        </div>
+
+        <app-chart           
+            [selectorVisible]="(state$ | async).selectorVisible"
+            [useAggregation]="(state$ | async).aggregationSettings.algorithm === 1"
+            [refreshing]="(state$ | async).refreshing"
+            [chart]="(state$ | async).chart"
+            [axisRange]="(state$ | async).axisRange"
+            [label]="(state$ | async).label">
+        </app-chart>
+
+        <app-legend
+            [projects]="(state$ | async).chart?.projects">
+        </app-legend>        
+    </div>
+</div>

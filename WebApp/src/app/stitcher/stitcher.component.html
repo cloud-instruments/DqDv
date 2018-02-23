@@ -1,0 +1,96 @@
+﻿<div class="row justify-content-md-center">
+    <div class="col-md-offset-3 col-md-6">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input formControlName="name" id="name" type="text" class="form-control dx-texteditor-input">
+            </div>
+
+            <div class="form-group">
+                <label for="testName">Test name:</label>
+                <input formControlName="testName" id="testName" type="text" class="form-control dx-texteditor-input">
+            </div>
+
+            <div class="form-group">
+                <label for="testType">Test type:</label>
+                <input formControlName="testType" id="testType" type="text" class="form-control dx-texteditor-input">
+            </div>
+
+            <div class="form-group">
+                <label for="channel">Channel:</label>
+                <input formControlName="channel" id="channel" type="text" class="form-control dx-texteditor-input">
+            </div>
+
+            <div class="form-group">
+                <label for="tag">Tag:</label>
+                <input formControlName="tag" id="tag" type="text" class="form-control dx-texteditor-input">
+            </div>
+
+            <div class="form-group">
+                <label for="mass">Mass, g:</label>
+                <dx-number-box 
+                    formControlName="mass"
+                    [inputAttr]="{id: 'mass'}"
+                    [showSpinButtons]="true"
+                    [showClearButton]="true"
+                    [min]="0"
+                    [max]="1000000">
+                </dx-number-box>
+            </div>
+
+            <div class="form-group">
+                <label for="area">Area, sq.cm.:</label>
+                <dx-number-box
+                    formControlName="area"
+                    [inputAttr]="{id: 'area'}"
+                    [showSpinButtons]="true"
+                    [showClearButton]="true"
+                    [min]="0"
+                    [max]="1000000">
+                </dx-number-box>
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <input formControlName="tryMergeAdjacentCycles" type="checkbox">
+                    Try to merge adjacent cycles on project boundaries
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">Comment:</label>
+                <textarea formControlName="comments" id="comments" type="text" class="form-control dx-texteditor-input" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <button
+                    class="btn btn-secondary"
+                    [disabled]="(state$ | async).stitching"
+                    (click)="onBack()">
+                    <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Back
+                </button>
+
+                <button
+                    class="btn btn-primary float-right"
+                    [disabled]="form.invalid || (state$ | async).stitching"
+                    type="submit">
+                    Stitch
+                </button>
+            </div>
+
+            <div *ngIf="(state$ | async).error" class="alert alert-danger">
+                {{((state$ | async).error)}}
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item disabled">
+                    <strong>Selected projects:</strong>
+                </li>
+                <li *ngFor="let project of projects"
+                    class="list-group-item">
+                    {{project.name}}
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>

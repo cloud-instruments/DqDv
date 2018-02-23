@@ -1,0 +1,37 @@
+﻿@import "bootstrap.scss";
+
+$secondary: #fff;
+$dev-express-button-background: #fff;
+$dev-express-button-border: #ddd;
+$dev-express-button-focus: #337ab7;
+
+.btn-secondary {
+    @include button-variant($dev-express-button-background, $dev-express-button-border)
+}
+
+.dx-button {
+    &.dx-state-hover {
+        background-color: darken($dev-express-button-background, 7.5%);
+        border-color: darken($dev-express-button-border, 10%);
+    }
+}
+
+.dx-viewport {
+    &.dx-color-scheme-light {
+
+        .form-control {
+            &.dx-texteditor-input {
+                &:focus {
+                    border-color: $dev-express-button-focus;
+                }
+
+                background-color: $dev-express-button-background;
+            }
+        }
+
+        .alert-danger {
+            background-color: #e89895;
+            color: $secondary;
+        }
+    }
+}

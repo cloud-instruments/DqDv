@@ -1,0 +1,26 @@
+﻿// Required
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+.btn {
+    font-size: $font-size-base * .875;
+    cursor: pointer;
+}
+
+.pagination {
+    font-size: $font-size-base * .875;
+    a[aria-label] {
+        span {
+            display: none;
+        }
+
+        &:after {
+            content: attr(aria-label);
+        }
+    }
+}
+
+#custom-template-editor .nav-tabs {
+    border-bottom: none;
+}

@@ -1,0 +1,15 @@
+﻿<div class="btn-group" role="group" ngbDropdown #container="ngbDropdown">
+    <button
+        #button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        aria-haspopup="true"
+        aria-expanded="false"
+        [title]="tooltip" 
+        ngbDropdownToggle>
+        <ng-content select=".app-dropdown-box-button"></ng-content>
+    </button>
+    <ul class="dropdown-menu" ngbDropdownMenu onclick="event.stopPropagation()">
+        <ng-container *ngIf="container.isOpen()" [ngTemplateOutlet]="template"></ng-container>
+    </ul>
+</div>

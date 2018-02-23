@@ -1,0 +1,99 @@
+﻿@import "bootstrap.scss";
+
+$secondary: #fff;
+$dev-express-button-background: #2a2a2a;
+$dev-express-button-border: #4d4d4d;
+$dev-express-button-focus: #1ca8dd;
+$dev-express-text-color: #dedede;
+$dev-express-menu-item-hover-color: #343434;
+$dev-express-pagination-border-color: $dev-express-button-border;
+$dev-express-pagination-active-bg: #555555;
+$dev-express-pagination-active-color: $dev-express-text-color;
+$dev-express-pagination-active-border-color: $dev-express-button-border;
+
+.dx-viewport {
+    &.dx-color-scheme-dark {
+
+        .btn-secondary {
+            @include button-variant($dev-express-button-background, $dev-express-button-border)
+        }
+
+        .dx-button {
+            border-color: $dev-express-button-border;
+
+            &.dx-state-hover {
+                background-color: darken($dev-express-button-background, 7.5%);
+                border-color: darken($dev-express-button-border, 10%);
+            }
+        }
+
+        .alert-danger {
+            background-color: #934340;
+            color: #2a2a2a;
+        }
+
+        .form-control {
+            &.dx-texteditor-input {
+                background-color: $dev-express-button-background;
+                border-color: $dev-express-button-border;
+                color: $dev-express-text-color;
+
+                &:focus {
+                    border-color: $dev-express-button-focus;
+                }
+            }
+        }
+
+        .dropdown-menu {
+            background-color: $dev-express-button-background;
+            border-color: $dev-express-button-border;
+            color: $dev-express-text-color;
+        }
+
+        .dropdown-item {
+            color: $dev-express-text-color;
+
+            &:hover {
+                background-color: $dev-express-menu-item-hover-color;
+            }
+        }
+
+        .dropdown-divider {
+            border-top-color: $dev-express-button-border;
+        }
+
+        .list-group-item {
+            background-color: $dev-express-button-background;
+            border-color: $dev-express-button-border;
+        }
+
+        .page-item {
+            &.disabled .page-link {
+                background-color: $dev-express-button-background;
+                border-color: $dev-express-pagination-border-color;
+            }
+
+            &.active .page-link {
+                color: $dev-express-pagination-active-color;
+                border-color: $dev-express-pagination-border-color;
+                background-color: $dev-express-pagination-active-bg;
+            }
+        }
+
+        .page-link {
+            background-color: $dev-express-button-background;
+            border-color: $dev-express-pagination-border-color;
+        }
+
+        div {
+            &.tabs__panel {
+                background-color: #2a2a2a;
+                box-shadow: inset 0px 0px 0px 1px $dev-express-button-border;
+            }
+        }
+
+        .fileuploader-container {
+            border-color: $dev-express-button-border;
+        }
+    }
+}

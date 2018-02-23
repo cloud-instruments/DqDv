@@ -1,0 +1,9 @@
+﻿<ul *ngIf="projects" class="list-group">
+    <li class="list-group-item disabled">
+        <strong>Selected projects:</strong>
+    </li>
+    <li *ngFor="let project of projects"
+        class="list-group-item">
+        {{project.name}}
+    </li>
+</ul>

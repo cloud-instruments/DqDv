@@ -1,0 +1,116 @@
+﻿<div #container *ngIf="step === 1">
+<div #toolbar class="form-group">
+    <div class="row">
+        <div class="col-md-4"> 
+            <dx-button 
+                hint="Refresh grid"
+                icon="refresh"
+                (onClick)="onRefresh()">
+            </dx-button>
+        </div>
+    </div>
+</div>
+
+<dx-data-grid
+    [allowColumnReordering]="true"
+    [allowColumnResizing]="true"
+    columnResizingMode="widget" 
+    [dataSource]="dataSource"
+    [showRowLines]="true"    
+     (onRowRemoving)="onRowRemoving($event)"
+    (onCellPrepared)="onCellPrepared($event)"
+    (onSelectionChanged)="onSelectionChanged($event)">
+    <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+    <dxi-column
+        [allowEditing]="false"
+        [allowSearch]="false"
+        dataField="id"
+        dataType="string"
+        [visible]="false">
+    </dxi-column>
+
+    <dxi-column
+        dataField="name"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }"
+        width="auto">
+    </dxi-column>
+
+    <dxi-column
+        dataField="template"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }">
+    </dxi-column>
+
+    <dxi-column
+        dataField="projectsCount"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256 }">
+    </dxi-column>
+
+    <dxi-column
+        [allowEditing]="false"
+        [calculateFilterExpression]="calculateDateTimeFilterExpression"
+        dataField="createdAt"
+        dataType="date"
+        format="shortDateShortTime"
+        [formItem]="{ visible: false }"
+        width="auto">
+    </dxi-column>
+
+    <dxi-column
+        [allowEditing]="false"
+        [calculateFilterExpression]="calculateDateTimeFilterExpression"
+        dataField="updatedAt"
+        dataType="date"
+        format="shortDateShortTime"
+        [formItem]="{ visible: false }"
+        width="auto">
+    </dxi-column>
+
+   
+    <dxi-column
+        dataField="comments"
+        dataType="string"
+        [editorOptions]="{ maxLength: 256, height: 100 }">
+    </dxi-column>    
+    <dxo-editing [allowDeleting]="true"                
+                 mode="form">       
+    </dxo-editing>
+
+    <dxo-grouping [contextMenuEnabled]="true">
+    </dxo-grouping>
+
+    <dxo-group-panel [visible]="true">
+    </dxo-group-panel>
+
+    <dxo-pager
+        [allowedPageSizes]="[10, 20, 50]"
+        [showInfo]="true"
+        [showNavigationButtons]="true"
+        [showPageSizeSelector]="true"
+        [visible]="true">
+    </dxo-pager>
+
+    <dxo-paging
+        [enabled]="true"
+        [pageSize]="10">
+    </dxo-paging>
+    <dxo-selection mode="single"
+                   [allowSelectAll]="false">
+    </dxo-selection>
+    <dxo-state-storing
+        [enabled]="true"
+        [savingTimeout]="200"
+        storageKey="view-list-grid-state"
+        type="sessionStorage">
+    </dxo-state-storing>
+</dx-data-grid>
+</div>
+
+<div *ngIf="step === 2">
+    <app-chart-view 
+        (close)="onCloseChart()"
+        [displaySystemPlotSelector]="false">
+    </app-chart-view>
+</div>

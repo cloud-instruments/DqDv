@@ -1,0 +1,42 @@
+﻿<div class="row justify-content-md-center">
+    <div class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8">
+        <form #f="ngForm" [formGroup]="form" (ngSubmit)="signup()">
+            <div class="form-group" [ngClass]="{'has-error': username.invalid && f.submitted}">
+                <label class="control-label">Username:</label>
+                <input formControlName="username" type="text" class="form-control" maxlength="32">
+                <p *ngIf="username.errors?.required && f.submitted">Username is required</p>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': email.invalid && f.submitted}">
+                <label class="control-label">E-mail:</label>
+                <input formControlName="email" type="text" class="form-control">
+
+                <p *ngIf="email.errors?.required && f.submitted">E-mail is required</p>
+                <p *ngIf="!email.errors?.required && email.errors?.email && f.submitted">Invalid e-mail address</p>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': password.invalid && f.submitted}">
+                <label class="control-label">Password:</label>
+                <input formControlName="password" type="password" class="form-control">
+
+                <p *ngIf="password.errors?.passwordValid && f.submitted">{{password.errors.passwordValid}}</p>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': password2.invalid && f.submitted}">
+                <label class="control-label">Repeat password:</label>
+                <input formControlName="password2" type="password" class="form-control">
+
+                <p *ngIf="password2.errors?.equals && f.submitted">Passwords do not match</p>
+            </div>
+
+            <div *ngFor="let error of (state$ | async).signupError?.split('<br>')" class="alert alert-danger">
+                {{error}}
+            </div>
+
+            <div class="form-group">
+                <a routerLink="/login">Login</a>
+                <button type="submit" class="btn btn-primary float-right" [disabled]="(state$ | async).inProgress">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>

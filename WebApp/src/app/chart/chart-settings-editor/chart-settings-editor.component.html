@@ -1,0 +1,101 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <fieldset>
+                    <legend>
+                        Chart\series settings
+                    </legend>
+                    <div class="form-group">
+                        <label for="chart-setting-title">Chart Title:</label>
+                        <input id="chart-setting-title" #chartTitle type="text" class="form-control dx-texteditor-input" [value]="chart.title || ''">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chart-setting-xasix-title">X-Axis Title:</label>
+                        <input id="chart-setting-xasix-title" #xAxisText type="text" class="form-control dx-texteditor-input" [value]="chart.xAxisText || ''">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chart-setting-yasix-title">Y-Axis Title:</label>
+                        <input id="chart-setting-yasix-title" type="text" class="form-control dx-texteditor-input" [value]="yAxisText1 || ''" (change)="onyAxisText1($event)">
+                    </div>
+                    <div class="form-group" *ngIf="(chart.yAxisText.length>1 && chart.yAxisText[1]!=='')===true">
+                        <label for="chart-setting-yasix2-title">yAxis Title (2):</label>
+                        <input id="chart-setting-yasix2-title" type="text" class="form-control dx-texteditor-input" [value]="yAxisText2 || ''" (change)="onyAxisText2($event)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chart-setting-point-size">Point size:</label>
+                        <dx-number-box #pointSize
+                            [inputAttr]="{id: 'chart-setting-point-size'}"
+                            [value]="chart?.plotParameters.pointSize || 1"
+                            [showSpinButtons]="true"
+                            [showClearButton]="true"
+                            [min]="1"
+                            [max]="25">
+                        </dx-number-box>
+                    </div>
+                </fieldset>
+            </div>
+            <div>
+                <fieldset>
+                    <legend>
+                        Grid lines
+                    </legend>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input #xLineVisible type="checkbox" [checked]="value.xLineVisible || false">
+                                x-line visible:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input #yLineVisible type="checkbox" [checked]="value.yLineVisible || false">
+                                y-line visible:
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div>
+                <fieldset>
+                    <legend>Font</legend>
+                    <div class="form-group">
+                        <label for="chart-setting-font-family">Font Family Name:</label>
+                        <select id="chart-setting-font-family" #fontFamilyName class="form-control dx-texteditor-input">
+                            <option value="Helvetica Neue" [selected]="label.font.family === 'Helvetica Neue'">Helvetica Neue</option>
+                            <option value="Helvetica" [selected]="label.font.family === 'Helvetica'">Helvetica</option>
+                            <option value="Arial" [selected]="label.font.family === 'Arial'">Arial</option>
+                            <option value="Calibri" [selected]="label.font.family === 'Calibri'">Calibri</option>
+                            <option value="Tahoma" [selected]="label.font.family === 'Tahoma'">Tahoma</option>
+                            <option value="Times New Roman" [selected]="label.font.family === 'Times New Roman'">Times New Roman</option>
+                            <option value="Georgia" [selected]="label.font.family === 'Georgia'">Georgia</option>
+                            <option value="Segoe" [selected]="label.font.family === 'Segoe'">Segoe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="chart-setting-font-size">Font size:</label>
+                        <dx-number-box #fontSize
+                            [inputAttr]="{id: 'chart-setting-font-size'}"
+                            [value]="label.font.size"
+                            [showSpinButtons]="true"
+                            [showClearButton]="true"
+                            [min]="1"
+                            [max]="25">
+                        </dx-number-box>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button class="btn btn-primary float-right" (click)="onSave(chartTitle, xAxisText, pointSize, fontFamilyName.value, fontSize,xLineVisible,yLineVisible)">Save</button>
+                    <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+</div>

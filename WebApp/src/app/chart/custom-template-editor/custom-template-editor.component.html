@@ -1,0 +1,305 @@
+﻿<div class="container-fluid" id="custom-template-editor">
+    <div class="row-flex">
+        <tabs #mainTabs (currentTabChange)="onTabChange($event)" class="nav nav-tabs">
+            <tab tabTitle="Templates" active="true" class="nav-item">
+                <div class="col-sm-12 h-100">
+                    <ul>
+                        <li *ngFor="let template of pagedItems" class="series">
+                            <label>{{template.name}}</label>
+                            <button class="btn btn-success float-right" (click)="onApplyTemplate(template)">Apply</button>
+                            <button *ngIf="template.canEdit === true" class="btn btn-primary float-right" (click)="onEditTemplate(template, mainTabs)">Edit</button>
+                            <button *ngIf="template.canEdit === true" class="btn btn-danger float-right" (click)="onDeleteTemplate(template)">Delete</button>
+                        </li>
+                    </ul>
+                    <ngb-pagination *ngIf="pager.pages && pager.pages.length"
+                        [collectionSize]="pager.totalItems"
+                        [pageSize]="pager.pageSize"
+                        [maxSize]="5"
+                        [rotate]="true"
+                        (pageChange)="setPage($event)"
+                        [boundaryLinks]="true">
+                    </ngb-pagination>
+                </div>
+            </tab>
+            <tab tabTitle="Add custom templates" class="nav-item">
+                <div class="col-sm-12">
+                    <tabs (currentTabChange)="onSubTabSimpleChange($event)" class="nav-tabs">
+                        <tab tabTitle="Templates" active="true" class="nav-sub-item">
+                            <div class="col-sm-12">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label>Template name:</label>
+                                        <input type="text" class="form-control dx-texteditor-input" [value]="plotTemplate?.name || ''" (change)="onChangeTemplateName($event)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>X-Axis:</label>
+                                        <select class="form-control dx-texteditor-input" 
+                                            [(ngModel)]="selectedArgumentItem"
+                                            (ngModelChange)="onChangeSimpleAxis($event)">
+                                            <option value="None">None</option>
+                                            <option *ngFor="let argumentItem of argumentAxisItems" [value]="argumentItem.id">{{argumentItem.itemName}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" *ngIf="showYAxisDropDown === true">
+                                        <label>Y-Axis:</label>
+                                        <angular2-multiselect #ySeries
+                                            [data]="dropdownListAxis"
+                                            [(ngModel)]="selectedAxisItems"
+                                            [settings]="dropdownSettings"
+                                            (onSelect)="onItemSelect($event)"
+                                            (onDeSelect)="OnItemDeSelect($event)"
+                                            (onSelectAll)="onSelectAll($event)"
+                                            (onDeSelectAll)="onDeSelectAll($event)">
+                                        </angular2-multiselect>
+
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </tab>
+                        <tab tabTitle="Cycle filter" class="nav-sub-item">
+                            <div class="col-sm-12">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label>From:</label>
+                                        <dx-number-box #from
+                                                       (onValueChanged)="onChangeFromCycle($event)"
+                                                       [value]="plotParameters?.fromCycle"
+                                                       [showSpinButtons]="true"
+                                                       [showClearButton]="true"
+                                                       [min]="1"
+                                                       [max]="1000000">
+                                        </dx-number-box>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>To:</label>
+                                        <dx-number-box #to
+                                                       (onValueChanged)="onChangeToCycle($event)"
+                                                       [value]="plotParameters?.toCycle"
+                                                       [showSpinButtons]="true"
+                                                       [showClearButton]="true"
+                                                       [min]="1"
+                                                       [max]="1000000">
+                                        </dx-number-box>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Every N-th:</label>
+                                        <dx-number-box #everyNth
+                                                       (onValueChanged)="onChangeNthCycle($event)"
+                                                       [value]="plotParameters?.everyNthCycle"
+                                                       [showSpinButtons]="true"
+                                                       [showClearButton]="true"
+                                                       [min]="2"
+                                                       [max]="1000">
+                                        </dx-number-box>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Custom:</label>
+                                        <input #custom type="text" class="form-control dx-texteditor-input" [value]="plotParameters?.customCycleFilter || ''" (change)="onChangeCustomFilter($event)">
+                                    </div>
+
+
+                                </fieldset>
+                            </div>
+                        </tab>
+                        <tab tabTitle="Optional" class="nav-sub-item">
+                            <div class="col-sm-12">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" [checked]="plotTemplate?.useAgregateData || false" (change)="onChangeAgregateData($event)">
+                                            Use agregate data:
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customtemplate-simplification">Simplification:</label>
+                                        <select class="form-control dx-texteditor-input" (change)="onChangeAlgorithm($event)" id="customtemplate-simplification">
+                                            <option [selected]="plotParameters?.simplification === 1" value="1">Enabled</option>
+                                            <option [selected]="plotParameters?.simplification === 2" value="2">Visvalingam-Whyatt</option>
+                                            <option [selected]="plotParameters?.simplification === 0" value="0">None</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input #disableCharge type="checkbox" [checked]="plotParameters?.disableCharge || false" (change)="onChangeDisableCharge($event)">
+                                                Disable charge
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input #disableDischarge type="checkbox" [checked]="plotParameters?.disableDischarge || false" (change)="onChangeDisableDischarge($event)">
+                                                Disable discharge
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Min Y-axis value:</label>
+                                        <dx-number-box #minY
+                                                       (onValueChanged)="onChangeMinY($event)"
+                                                       [value]="plotParameters?.minY"
+                                                       [showSpinButtons]="true"
+                                                       [showClearButton]="true">
+                                        </dx-number-box>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Max Y-axis value:</label>
+                                        <dx-number-box #maxY
+                                                       (onValueChanged)="onChangeMaxY($event)"
+                                                       [value]="plotParameters?.maxY"
+                                                       [showSpinButtons]="true"
+                                                       [showClearButton]="true">
+                                        </dx-number-box>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Threshold:</label>
+                                        <dx-number-box #threshold
+                                                       (onValueChanged)="onChangeThreshold($event)"
+                                                       [value]="plotParameters?.threshold"
+                                                       [showSpinButtons]="true"
+                                                       [showClearButton]="true"
+                                                       [min]="0">
+                                        </dx-number-box>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </tab>
+                        <tab tabTitle="Settings" class="nav-sub-item">
+                            <div class="col-sm-12">
+                                <fieldset>
+                                    <legend>
+                                        Grid lines
+                                    </legend>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input #xLineVisible type="checkbox" [checked]="plotParameters?.xLineVisible || false" (change)="onChangeXLineVisible($event)">
+                                                X grid line visible:
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input #yLineVisible type="checkbox" [checked]="plotParameters?.yLineVisible || false" (change)="onChangeYLineVisible($event)">
+                                                Y grid line visible:
+                                            </label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input #xLegendVisible type="checkbox" [checked]="plotParameters?.legendShowen || false" (change)="onChangeLegendVisible($event)">
+                                        Show Template Legend:
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <fieldset>
+
+                                    <div class="form-group">
+                                        <label>Point size:</label>
+                                        <dx-number-box #pointSize
+                                                       (onValueChanged)="onChangePointSize($event)"
+                                                       [value]="plotParameters?.pointSize || 1"
+                                                       [showSpinButtons]="true"
+                                                       [showClearButton]="true"
+                                                       [min]="1"
+                                                       [max]="25">
+                                        </dx-number-box>
+                                    </div>
+                                    <legend>
+                                        Font
+                                    </legend>
+                                    <div class="form-group">
+                                        <label>Font Family Name:</label>
+                                        <select #fontFamilyName class="form-control dx-texteditor-input" (change)="onChangeFontName($event)">
+                                            <option value="Verdana" [selected]="plotParameters?.fontFamilyName === 'Verdana'">Verdana</option>
+                                            <option value="Helvetica Neue" [selected]="plotParameters?.fontFamilyName === 'Helvetica Neue'">Helvetica Neue</option>
+                                            <option value="Helvetica" [selected]="plotParameters?.fontFamilyName === 'Helvetica'">Helvetica</option>
+                                            <option value="Arial" [selected]="plotParameters?.fontFamilyName === 'Arial'">Arial</option>
+                                            <option value="Calibri" [selected]="plotParameters?.fontFamilyName === 'Calibri'">Calibri</option>
+                                            <option value="Tahoma" [selected]="plotParameters?.fontFamilyName === 'Tahoma'">Tahoma</option>
+                                            <option value="Times New Roman" [selected]="plotParameters?.fontFamilyName === 'Times New Roman'">Times New Roman</option>
+                                            <option value="Georgia" [selected]="plotParameters?.fontFamilyName === 'Georgia'">Georgia</option>
+                                            <option value="Segoe" [selected]="plotParameters?.fontFamilyName === 'Segoe'">Segoe</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Font size:</label>
+                                        <dx-number-box #fontSize
+                                                       (onValueChanged)="onChangeFontSize($event)"
+                                                       [value]="plotParameters?.fontSize"
+                                                       [showSpinButtons]="true"
+                                                       [showClearButton]="true"
+                                                       [min]="1"
+                                                       [max]="25">
+                                        </dx-number-box>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </tab>
+                    </tabs>
+                </div>
+            </tab>
+            <!--<tab tabTitle="Add custom templates" class="nav-item">
+                <div class="col-xs-12">
+                    <div class="col-xs-12">
+                        <fieldset>
+                            <div class="form-group">
+                                <label>Template name:</label>
+                                <input type="text" class="form-control" [value]="plotTemplate?.name || ''" (change)="onChangeTemplateName($event)">
+                            </div>
+                            <div class="form-group">
+                                <label>X-Axis</label>
+                                <select class="form-control" (change)="onChangeXAxis($event)">
+                                    <option value="CycleNumber" [selected]="true" class="series">Cycle #</option>
+                                    <option value="ChargeEndCurrent">Charge End Current</option>
+                                    <option value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">MidVoltage</option>
+                                    <option value="ChargeEndVoltage">Charge End Voltage</option>
+                                    <option value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>yAxis:</label>
+                                <angular2-multiselect #ySeries [data]="dropdownListTemplates" [(ngModel)]="selectedTemplateItems"
+                                    [settings]="dropdownSettings"
+                                    (onSelect)="onItemSelect($event)"
+                                    (onDeSelect)="OnItemDeSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)"
+                                    (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </tab>
+            <tab tabTitle="Add template with formula" class="nav-item">
+                <div class="col-xs-12">
+                    <tabs (currentTabChange)="onSubTabFormulaChange($event)" class="nav nav-tabs">
+                        <tab tabTitle="Templates" active="true" class="nav-sub-item">
+                        </tab>
+                        <tab tabTitle="Cycle filter" class="nav-sub-item">
+                        </tab>
+                        <tab tabTitle="Optinal" class="nav-sub-item">
+                        </tab>
+                    </tabs>
+                </div>
+            </tab>-->
+        </tabs>
+        <div class="col-sm-12" *ngIf="showActionButtons === true">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="onSave()">Save</button>
+                <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

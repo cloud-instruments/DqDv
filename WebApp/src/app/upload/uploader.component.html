@@ -1,0 +1,120 @@
+﻿<div class="row-fluid">
+    <div class="col-sm-offset-3 col-sm-6 mx-auto">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(file.value)">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <dx-text-box [inputAttr]="{id: 'name'}" formControlName="name"></dx-text-box>
+            </div>
+            
+            <p>
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Optional fields
+                </button>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-block">
+                    
+                    <div class="form-group">
+                        <label for="testName">Test name:</label>
+                        <dx-text-box [inputAttr]="{id: 'testName'}" formControlName="testName"></dx-text-box>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="testType">Test type:</label>
+                        <dx-text-box [inputAttr]="{id: 'testType'}" formControlName="testType"></dx-text-box>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="channel">Channel:</label>
+                        <dx-text-box [inputAttr]="{id: 'channel'}" formControlName="channel"></dx-text-box>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tag">Tag:</label>
+                        <dx-text-box [inputAttr]="{id: 'tag'}" formControlName="tag"></dx-text-box>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mass">Mass, g:</label>
+                        <dx-number-box
+                            [inputAttr]="{id: 'mass'}"
+                            formControlName="mass"
+                            [showSpinButtons]="true"
+                            [showClearButton]="true"
+                            [min]="0"
+                            [max]="1000000">
+                        </dx-number-box>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activeMaterialFraction">Active Material Fraction:</label>
+                        <dx-number-box
+                            [inputAttr]="{id: 'activeMaterialFraction'}"
+                            formControlName="activeMaterialFraction"
+                            [showSpinButtons]="true"
+                            [showClearButton]="true"
+                            [min]="0"
+                            [max]="1000000">
+                        </dx-number-box>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="theoreticalCapacity">Theoretical Capacity, mAhr/g:</label>
+                        <dx-number-box
+                            [inputAttr]="{id: 'theoreticalCapacity'}"
+                            formControlName="theoreticalCapacity"
+                            [showSpinButtons]="true"
+                            [showClearButton]="true"
+                            [min]="0"
+                            [max]="1000000">
+                        </dx-number-box>
+                    </div>
+
+            
+                    <div class="form-group">
+                        <label for="area">Area, sq.cm.:</label>
+                        <dx-number-box
+                            [inputAttr]="{id: 'area'}"
+                            formControlName="area"
+                            [showSpinButtons]="true"
+                            [showClearButton]="true"
+                            [min]="0"
+                            [max]="1000000">
+                        </dx-number-box>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comments">Comment:</label>
+                        <dx-text-area
+                            [inputAttr]="{id: 'comments'}"
+                            formControlName="comments"
+                            [height]="90">
+                        </dx-text-area>
+                    </div>
+
+                </div>
+            </div>
+         
+            <div class="form-group fileuploader-container">
+                <dx-file-uploader
+                    #file
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                    [multiple]="true"
+                    uploadMode="useForm">
+                </dx-file-uploader>
+            </div>
+
+            <div class="form-group">
+                <button [disabled]="form.invalid || !file.value || file.value.length === 0 || (state$ | async).uploading" type="submit" class="btn btn-primary">Upload</button>
+            </div>
+
+            <div *ngIf="(state$ | async).uploading" class="progress">
+                <div class="progress-bar" role="progressbar" [attr.aria-valuenow]="(state$ | async).percentDone" aria-valuemin="0" aria-valuemax="100" [style.width]="(state$ | async).percentDone + '%'"></div>
+            </div>
+            
+            <div *ngIf="(state$ | async).error" class="alert alert-danger">
+                {{((state$ | async).error)}}
+            </div>
+        </form>
+    </div>
+</div>

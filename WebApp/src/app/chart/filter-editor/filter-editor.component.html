@@ -1,0 +1,111 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset>
+                <legend>Cycle Selectors</legend>
+                <div class="form-group">
+                    <label for="filter-editor-cycle-from">From:</label>
+                    <dx-number-box #from
+                        [inputAttr]="{id: 'filter-editor-cycle-from'}"
+                        [value]="value.from"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="1"
+                        [max]="1000000">
+                    </dx-number-box>
+                </div>
+                <div class="form-group">
+                    <label for="filter-editor-cycle-to">To:</label>
+                    <dx-number-box #to
+                        [inputAttr]="{id: 'filter-editor-cycle-to'}"
+                        [value]="value.to"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="1"
+                        [max]="1000000">
+                    </dx-number-box>
+                </div>
+                <div class="form-group">
+                    <label for="filter-editor-cycle-number">Every N-th:</label>
+                    <dx-number-box #everyNth
+                        [inputAttr]="{id: 'filter-editor-cycle-number'}"
+                        [value]="value.everyNth"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="2"
+                        [max]="1000">
+                    </dx-number-box>
+                </div>
+                <div class="form-group">
+                    <label for="filter-editor-custom">Custom:</label>
+                    <input id="filter-editor-custom" #custom type="text" class="form-control dx-texteditor-input" [value]="value.custom || ''">
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-12">
+            <fieldset>
+                <legend>
+                    Optional
+                </legend>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input #disableCharge type="checkbox" [checked]="value.disableCharge || false">
+                            Disable charge
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input #disableDischarge type="checkbox" [checked]="value.disableDischarge || false">
+                            Disable discharge
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="filter-editor-cycle-min-y">MinY:</label>
+                    <dx-number-box #minY
+                        [inputAttr]="{id: 'filter-editor-cycle-min-y'}"
+                        [value]="value.minY"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true">
+                    </dx-number-box>
+                </div>
+                <div class="form-group">
+                    <label for="filter-editor-cycle-max-y">MaxY:</label>
+                    <dx-number-box #maxY
+                        [inputAttr]="{id: 'filter-editor-cycle-max-y'}"
+                        [value]="value.maxY"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true">
+                    </dx-number-box>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-12">
+            <fieldset>
+                <legend>
+                    Differential Analysis
+                </legend>
+                <div class="form-group">
+                    <label for="filter-editor-threshold">Threshold:</label>
+                    <dx-number-box
+                        #threshold
+                        [inputAttr]="{id: 'filter-editor-threshold'}"
+                        [value]="value.threshold"
+                        [showSpinButtons]="true"
+                        [showClearButton]="true"
+                        [min]="0">
+                    </dx-number-box>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="onSave(from, to, everyNth, custom, disableCharge, disableDischarge, threshold, minY, maxY)">Save</button>
+                <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-row mb-3" *ngFor="let series of pagedItems">
+                <div class="col">
+                    <input [id]="series.valueField" type="text" [value]="series.name" class="form-control dx-texteditor-input" (change)="onLeave($event)"/>
+                    <input type="hidden" [value]="series.valueField" style="margin-right: 5px;"/>
+                </div>
+                <div class="col">
+                    <input [(colorPicker)]="series.color" class="form-control dx-texteditor-input" [cpOKButton] [style.background]="series.color"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <ngb-pagination *ngIf="pager.pages && pager.pages.length"
+                    [collectionSize]="pager.totalItems"
+                    [pageSize]="pager.pageSize"
+                    [maxSize]="5"
+                    [rotate]="true"
+                    (pageChange)="setPage($event)"
+                    [boundaryLinks]="true">
+                </ngb-pagination>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="onSave(chartSeries)">Save</button>
+                <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

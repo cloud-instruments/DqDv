@@ -1,0 +1,18 @@
+﻿<div class="form-group">
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 0" (click)="setValue(0)">Capacity vs Cycle</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 8" (click)="setValue(8)">Efficiency vs Cycle</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 16" (click)="setValue(16)">Retention vs Cycle</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 17" (click)="setValue(17)">Energy vs Cycle</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 18" (click)="setValue(18)">Power vs Cycle</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 15" (click)="setValue(15)">Resistance vs Cycle</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 3" (click)="setValue(3)">Mid Voltage vs Cycle</button>
+</div>
+
+<div class="form-group" *ngIf="!averagePlotsOnly">
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 4" (click)="setValue(4)" *ngIf="!averagePlotsOnly">Voltage vs Capacity</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 14" (click)="setValue(14)" *ngIf="!averagePlotsOnly">Voltage vs Time</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 13" (click)="setValue(13)" *ngIf="!averagePlotsOnly">Current vs Time</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 12" (click)="setValue(12)">dQ vs dV</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === 11" (click)="setValue(11)">dV vs dQ</button>
+    <button class="btn btn-primary btn-block form-control" [class.active]="value === -1" >Custom Template</button>
+</div>

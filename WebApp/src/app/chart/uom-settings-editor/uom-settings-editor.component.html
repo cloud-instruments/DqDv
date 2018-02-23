@@ -1,0 +1,77 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="uom-settings-current-units">Current units:</label>
+                <select id="uom-settings-current-units" #currentUoM class="form-control dx-texteditor-input">
+                    <option value="0" [selected]="value.currentUoM === 0">milliAmpere (mA)</option>
+                    <option value="1" [selected]="value.currentUoM === 1">Ampere (A)</option>
+                    <option value="2" [selected]="value.currentUoM === 2">microAmpere (μA)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="uom-settings-capacity-units">Capacity units:</label>
+                <select id="uom-settings-capacity-units" #capacityUoM class="form-control dx-texteditor-input">
+                    <option value="0" [selected]="value.capacityUoM === 0">milliAmpere·hour (mAh)</option>
+                    <option value="1" [selected]="value.capacityUoM === 1">Ampere·hour (Ah)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="uom-settings-time-units">Time units:</label>
+                <select id="uom-settings-time-units" #timeUoM class="form-control dx-texteditor-input">
+                    <option value="0" [selected]="value.timeUoM === 0">Seconds (s)</option>
+                    <option value="1" [selected]="value.timeUoM === 1">Minutes (min)</option>
+                    <option value="2" [selected]="value.timeUoM === 2">Hours (h)</option>
+                    <option value="3" [selected]="value.timeUoM === 3">Days (d)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="uom-settings-power-units">Power units:</label>
+                <select id="uom-settings-power-units" #powerUoM class="form-control dx-texteditor-input">
+                    <option value="0" [selected]="value.powerUoM === 0">Watt (W)</option>
+                    <option value="1" [selected]="value.powerUoM === 1">Microwatts (μW)</option>
+                    <option value="2" [selected]="value.powerUoM === 2">Milliwatts (mW)</option>
+                    <option value="3" [selected]="value.powerUoM === 3">Kilowatts (kW)</option>
+                    <option value="4" [selected]="value.powerUoM === 4">Megawatts (MW)</option>
+                    <option value="5" [selected]="value.powerUoM === 5">Gigawatts (GW)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="uom-settings-energy-units">Energy units:</label>
+                <select id="uom-settings-energy-units" #energyUoM class="form-control dx-texteditor-input">
+                    <option value="0" [selected]="value.energyUoM === 0">Watt Hours (Wh)</option>
+                    <option value="1" [selected]="value.energyUoM === 1">Microwatt Hours (μWh)</option>
+                    <option value="2" [selected]="value.energyUoM === 2">Milliwatt Hours (mWh)</option>
+                    <option value="3" [selected]="value.energyUoM === 3">Kilowatt Hours (kWh)</option>
+                    <option value="4" [selected]="value.energyUoM === 4">Megawatt Hours (MWh)</option>
+                    <option value="5" [selected]="value.energyUoM === 5">Gigawatt Hours (GWh)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="uom-settings-resistance-units">Resistance units:</label>
+                <select id="uom-settings-resistance-units" #resistanceUoM class="form-control dx-texteditor-input">
+                    <option value="0" [selected]="value.resistanceUoM === 0">Ohms (Ω)</option>
+                    <option value="1" [selected]="value.resistanceUoM === 1">Microohms (μΩ)</option>
+                    <option value="2" [selected]="value.resistanceUoM === 2">Milliohms (mΩ)</option>
+                    <option value="3" [selected]="value.resistanceUoM === 3">Kiloohms (kΩ)</option>
+                    <option value="4" [selected]="value.resistanceUoM === 4">Megaohms (MΩ)</option>
+                    <option value="5" [selected]="value.resistanceUoM === 5">Gigaohms (GΩ)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="uom-settings-capacity-normalize">Normalize by:</label>
+                <select id="uom-settings-capacity-normalize" #normalizeBy class="form-control dx-texteditor-input">
+                    <option value="0" [selected]="value.normalizeBy === 0">None</option>
+                    <option value="1" [selected]="value.normalizeBy === 1">Mass, g.</option>
+                    <option value="2" [selected]="value.normalizeBy === 2">Area, sq.cm.</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="onSave(currentUoM.value, capacityUoM.value, timeUoM.value, powerUoM.value, energyUoM.value, resistanceUoM.value,normalizeBy.value)">Save</button>
+                <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

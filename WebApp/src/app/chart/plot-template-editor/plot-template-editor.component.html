@@ -1,0 +1,358 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-xs-12">
+                <fieldset>
+                    <legend>
+                        Template settings
+                    </legend>
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input #templateName type="text" class="form-control" [value]="plotTemplate.name || ''" (change)="onChangeTemplateName($event)">
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input #useCycleData type="checkbox" [checked]="plotTemplate.useCycleData || false" (change)="onChangeTemplateUseCycleData($event)">
+                                Use data from Cycle:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="plotTemplate.useCycleData===true" >
+                        <div class="checkbox">
+                            <label>
+                                <input #useFirstCycle type="checkbox" [checked]="plotTemplate.useFirstCycle || false" (change)="onChangeTemplateUseFirstCycle($event)">
+                                Use first Cycle line:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input #useAgregateData type="checkbox" [checked]="plotTemplate.useAgregateData || false" (change)="onChangeTemplateUseAgregateData($event)">
+                                Use agregation data:
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input #checkChargeDischarge type="checkbox" [checked]="plotTemplate.checkChargeDischarge || false"  (change)="onChangeTemplateChargeDischarge($event)">
+                                Show Charge\Discharge data:
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>       
+            <div class="col-xs-12" *ngIf="plotTemplate.useCycleData===false">
+                <fieldset>
+                    <legend>
+                        xAxis data:
+                    </legend>
+                    <div class="col-xs-6">
+                        <fieldset>
+                            <legend>
+                                Numerator:
+                            </legend>
+                            <div class="form-group">
+                                <label>Arg 1:</label>
+                                <select  *ngIf="plotTemplate.useCycleData===false" #arg1AllPointsNumeratorX class="form-control" (change)="onChangeArg1AllPointsNumeratorX($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="1">1</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>
+                                </select>                                
+                                <select *ngIf="plotTemplate.useCycleData===true" #arg1CycleNumeratorX class="form-control" (change)="onChangeArg1CycleNumeratorX($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="1">1</option>
+                                    <option value="CycleNumber">Cycle Number</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeEndCurrent">Charge End Current</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">Mid Voltage</option>
+                                    <option value="CoulombicEfficiency">Coulombic Efficiency %</option>
+                                    <option value="EnergyEfficiency">Energy Efficiency %</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="EndVoltage">Charge End Voltage</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="Area Specific Impedance">Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="Discharge Area Specific Impedance">Discharge Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacity">Charge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacity">Discharge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacityRetention">Charge Capacity Retention %</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacityRetention">Discharge Capacity Retention %</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Action:</label>
+                                <select #actionNumeratorX class="form-control" (change)="onChangeActionNumeratorX($event)">
+                                    <option value="0" [selected]="true">NONE</option>
+                                    <option value="1">MULT</option>
+                                    <option value="2">PLUS</option>
+                                    <option value="3">MINUS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Arg 2:</label>
+                                <select  *ngIf="plotTemplate.useCycleData===false" #arg2AllPointsNumeratorX class="form-control" (change)="onChangeArg2NumeratorX($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>
+                                </select>
+                                <select *ngIf="plotTemplate.useCycleData===true" #arg2CycleNumeratorX class="form-control" (change)="onChangeArg2NumeratorX($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="CycleNumber">Cycle Number</option>
+                                    <option value="ChargeEndCurrent">Charge End Current</option>
+                                    <option value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">Mid Voltage</option>
+                                    <option value="EndVoltage">Charge End Voltage</option>
+                                    <option value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option value="CoulombicEfficiency">Coulombic Efficiency %</option>
+                                    <option value="EnergyEfficiency">Energy Efficiency %</option>
+                                    <option value="Area Specific Impedance">Area Specific Impedance (ASI)</option>
+                                    <option value="Discharge Area Specific Impedance">Discharge Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacity">Charge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacity">Discharge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacityRetention">Charge Capacity Retention</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacityRetention">Discharge Capacity Retention</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-xs-6">
+                        <fieldset>
+                            <legend>
+                                Denominator:
+                            </legend>
+                            <div class="form-group">
+                                <label>Arg 1:</label>
+                                <select  *ngIf="plotTemplate.useCycleData===false" #arg1AllPointsDenominatorX class="form-control" (change)="onChangeArg1DenominatorX($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="100">100</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>
+                                </select>
+                                <select *ngIf="plotTemplate.useCycleData===true" #arg1CycleDenominatorX class="form-control" (change)="onChangeArg1DenominatorX($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="100">100</option>
+                                    <option value="CycleNumber">Cycle Number</option>
+                                    <option value="ChargeEndCurrent">Charge End Current</option>
+                                    <option value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">Mid Voltage</option>
+                                    <option value="EndVoltage">Charge End Voltage</option>
+                                    <option value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option value="CoulombicEfficiency">Coulombic Efficiency %</option>
+                                    <option value="EnergyEfficiency">Energy Efficiency %</option>
+                                    <option value="Area Specific Impedance">Area Specific Impedance (ASI)</option>
+                                    <option value="Discharge Area Specific Impedance">Discharge Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacity">Charge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacity">Discharge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacityRetention">Charge Capacity Retention %</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacityRetention">Discharge Capacity Retention %</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Action:</label>
+                                <select #actionDenominatorX class="form-control" (change)="onChangeActionDenominatorX($event)">
+                                    <option value="0" [selected]="true">NONE</option>
+                                    <option value="1">MULT</option>
+                                    <option value="2">PLUS</option>
+                                    <option value="3">MINUS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Arg 2:</label>
+                                <select  *ngIf="plotTemplate.useCycleData===false" #arg2AllPointsDenominatorX class="form-control" (change)="onChangeArg2DenominatorX($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>
+                                </select>
+                                <select *ngIf="plotTemplate.useCycleData===true" #arg2CycleDenominatorX class="form-control" (change)="onChangeArg2DenominatorX($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="CycleNumber">Cycle Number</option>
+                                    <option value="ChargeEndCurrent">Charge End Current</option>
+                                    <option value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">Mid Voltage</option>
+                                    <option value="EndVoltage">Charge End Voltage</option>
+                                    <option value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option value="CoulombicEfficiency">Coulombic Efficiency %</option>
+                                    <option value="EnergyEfficiency">Energy Efficiency %</option>
+                                    <option value="Area Specific Impedance">Area Specific Impedance (ASI)</option>
+                                    <option value="Discharge Area Specific Impedance">Discharge Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacity">Charge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacity">Discharge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacityRetention">Charge Capacity Retention %</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacityRetention">Discharge Capacity Retention %</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-xs-12">
+                <fieldset>
+                    <legend>
+                        yAxis data:
+                    </legend>
+                    <div class="col-xs-6">
+                        <fieldset>
+                            <legend>
+                                Numerator:
+                            </legend>
+                            <div class="form-group">
+                                <label>Arg 1:</label>
+                                <select  *ngIf="plotTemplate.useCycleData===false" #arg1AllPointsNumeratorY class="form-control" (change)="onChangeArg1NumeratorY($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="1">1</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>                                   
+                                </select>
+                                <select *ngIf="plotTemplate.useCycleData===true" #arg1CycleNumeratorY class="form-control" (change)="onChangeArg1NumeratorY($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="1">1</option>
+                                    <option value="CycleNumber">Cycle Number</option>
+                                    <option value="ChargeEndCurrent">Charge End Current</option>
+                                    <option value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">Mid Voltage</option>
+                                    <option value="EndVoltage">Charge End Voltage</option>
+                                    <option value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option value="CoulombicEfficiency">Coulombic Efficiency %</option>
+                                    <option value="EnergyEfficiency">Energy Efficiency %</option>
+                                    <option value="Area Specific Impedance">Area Specific Impedance (ASI)</option>
+                                    <option value="Discharge Area Specific Impedance">Discharge Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacity">Charge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacity">Discharge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacityRetention">Charge Capacity Retention %</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacityRetention">Discharge Capacity Retention %</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Action:</label>
+                                <select #actionNumeratorY class="form-control" (change)="onChangeActionNumeratorY($event)">
+                                    <option value="0" [selected]="true">NONE</option>
+                                    <option value="1">MULT</option>
+                                    <option value="2">PLUS</option>
+                                    <option value="3">MINUS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Arg 2:</label>
+                                <select  *ngIf="plotTemplate.useCycleData===false" #arg2AllPointsNumeratorY class="form-control" (change)="onChangeArg2NumeratorY($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>    
+                                </select>
+                                <select *ngIf="plotTemplate.useCycleData===true" #arg2CycleNumeratorY class="form-control" (change)="onChangeArg2NumeratorY($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="CycleNumber">Cycle Number</option>
+                                    <option value="ChargeEndCurrent">Charge End Current</option>
+                                    <option value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">Mid Voltage</option>
+                                    <option value="EndVoltage">Charge End Voltage</option>
+                                    <option value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option value="CoulombicEfficiency">Coulombic Efficiency %</option>
+                                    <option value="EnergyEfficiency">Energy Efficiency %</option>
+                                    <option value="Area Specific Impedance">Area Specific Impedance (ASI)</option>
+                                    <option value="Discharge Area Specific Impedance">Discharge Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacity">Charge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacity">Discharge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacityRetention">Charge Capacity Retention %</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacityRetention">Discharge Capacity Retention %</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-xs-6">
+                        <fieldset>
+                            <legend>
+                                Denominator:
+                            </legend>
+                            <div class="form-group">
+                                <label>Arg 1:</label>
+                                <select  *ngIf="plotTemplate.useCycleData===false" #arg1AllPointsDenominatorY class="form-control" (change)="onChangeArg1DenominatorY($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="100">100</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>
+                                </select>
+                                <select *ngIf="plotTemplate.useCycleData===true" #arg1CycleDenominatorY class="form-control" (change)="onChangeArg1DenominatorY($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="100">100</option>
+                                    <option value="CycleNumber">Cycle Number</option>
+                                    <option value="ChargeEndCurrent">Charge End Current</option>
+                                    <option value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">Mid Voltage</option>
+                                    <option value="EndVoltage">Charge End Voltage</option>
+                                    <option value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option value="CoulombicEfficiency">Coulombic Efficiency %</option>
+                                    <option value="EnergyEfficiency">Energy Efficiency %</option>
+                                    <option value="Area Specific Impedance">Area Specific Impedance (ASI)</option>
+                                    <option value="Discharge Area Specific Impedance">Discharge Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacity">Charge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacity">Discharge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacityRetention">Charge Capacity Retention %</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacityRetention">Discharge Capacity Retention %</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Action:</label>
+                                <select #actionDenominatorY class="form-control" (change)="onChangeActionDenominatorY($event)">
+                                    <option value="0" [selected]="true">NONE</option>
+                                    <option value="1">MULT</option>
+                                    <option value="2">PLUS</option>
+                                    <option value="3">MINUS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Arg 2:</label>
+                                <select  *ngIf="plotTemplate.useCycleData===false" #arg1AllPointsDenominatorY class="form-control" (change)="onChangeArg2DenominatorY($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="Time">Time</option>
+                                    <option value="Current">Current</option>
+                                    <option value="Voltage">Voltage</option>
+                                    <option value="Capacity">Capacity</option>
+                                </select>
+                                <select *ngIf="plotTemplate.useCycleData===true" #arg2CycleDenominatorY class="form-control" (change)="onChangeArg2DenominatorY($event)">
+                                    <option value="None" [selected]="true">None</option>
+                                    <option value="CycleNumber">Cycle Number</option>
+                                    <option value="ChargeEndCurrent">Charge End Current</option>
+                                    <option value="DischargeEndCurrent">Discharge End Current</option>
+                                    <option value="MidVoltage">Mid Voltage</option>
+                                    <option value="EndVoltage">Charge End Voltage</option>
+                                    <option value="DischargeEndVoltage">Discharge End Voltage</option>
+                                    <option value="CoulombicEfficiency">Coulombic Efficiency %</option>
+                                    <option value="EnergyEfficiency">Energy Efficiency %</option>
+                                    <option value="Area Specific Impedance">Area Specific Impedance (ASI)</option>
+                                    <option value="Discharge Area Specific Impedance">Discharge Area Specific Impedance (ASI)</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacity">Charge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacity">Discharge Capacity</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="ChargeCapacityRetention">Charge Capacity Retention %</option>
+                                    <option *ngIf="plotTemplate.checkChargeDischarge===true" value="DischargeCapacityRetention">Discharge Capacity Retention %</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="onSave()">Save</button>
+                <button class="btn btn-secondary float-right" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+﻿<div class="container">
+    <div class="row">
+            <div class="col-md-12">
+                <form [formGroup]="preferencesForm" novalidate>
+                    <div *ngFor="let error of (state$ | async).error?.split('<br>')" class="alert alert-danger">
+                        {{error}}
+                    </div>
+                <ngb-accordion activeIds="user-chart-general-settings">
+                    <ngb-panel title="Chart general settings" id="user-chart-general-settings">
+                        <ng-template ngbPanelContent>
+                            <div class="row" formGroupName="chartPreferences">
+                                <div class="col-md-12">
+                                    <div>
+                                        <fieldset>
+                                            <legend>Data Points</legend>
+                                            <div class="form-group">
+                                                <label for="chart-setting-point-size">Point size:</label>
+                                                <dx-number-box formControlName="pointSize"
+                                                               [inputAttr]="{id: 'chart-setting-point-size'}"
+                                                               [showSpinButtons]="true"
+                                                               [showClearButton]="true"
+                                                               [min]="1"
+                                                               [max]="25">
+                                                </dx-number-box>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div>
+                                        <fieldset>
+                                            <legend>Grid Lines</legend>
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input formControlName="xLineVisible" type="checkbox" >
+                                                        Show X-Line
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input formControlName="yLineVisible" type="checkbox" >
+                                                        Show Y-Line
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div>
+                                        <fieldset>
+                                            <legend>Legend</legend>
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input formControlName="showLegend" type="checkbox">
+                                                        Show Legend
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div>
+                                        <fieldset>
+                                            <legend>Labels Font</legend>
+                                            <div class="form-group">
+                                                <label for="chart-setting-font-family">Font Family Name:</label>
+                                                <select id="chart-setting-font-family" formControlName="fontFamilyName" class="form-control dx-texteditor-input">
+                                                    <option *ngFor="let fontFamilyName of chartFontFamilies" [value]="fontFamilyName">{{fontFamilyName}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="chart-setting-font-size">Font size:</label>
+                                                <dx-number-box formControlName="fontSize"
+                                                               [inputAttr]="{id: 'chart-setting-font-size'}"
+                                                               [value]="fontSize"
+                                                               [showSpinButtons]="true"
+                                                               [showClearButton]="true"
+                                                               [min]="1"
+                                                               [max]="25">
+                                                </dx-number-box>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                    <ngb-panel title="Chart series color settings">
+                        <ng-template ngbPanelContent>
+                            <div class="row">
+                                <div class="col">
+                                    <legend>Series palette colors:</legend>
+                                </div>
+                            </div>
+                            <div formGroupName="chartPreferences">
+                                <div class="row" formArrayName="paletteColors">
+                                    <!--<div class="col" *ngFor="let control of paletteColors.controls; let i = index">
+                                        <input [(colorPicker)]="control.value.color" [formControlName]="i" class="form-control dx-texteditor-input" [cpOKButton]="false" [style.background]="control.value.color" [value]="i + 1" readonly="readonly" style="width: 40px; cursor: pointer; text-align: center; padding: 0"/>
+                                    </div>-->
+                                    <div class="col" *ngFor="let palette of getPaletteColorGroup(0, 12); let i = index" >
+                                        <input [(colorPicker)]="palette.value.color" class="form-control dx-texteditor-input" [cpOKButton]="false" [style.background]="palette.value.color" [value]="i + 1" readonly="readonly" style="width: 40px; cursor: pointer; text-align: center; padding: 0"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col" *ngFor="let palette of getPaletteColorGroup(12, 24); let i = index">
+                                        <input [(colorPicker)]="palette.value.color" class="form-control dx-texteditor-input" [cpOKButton]="false" [style.background]="palette.value.color" [value]="i + 12 + 1" readonly="readonly" style="width: 40px; cursor: pointer; text-align: center; padding: 0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+                </form>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group pt-3">
+                    <button class="btn btn-primary float-right" (click)="save()" [disabled]="!IsReady">Save</button>
+                </div>
+            </div>
+    </div>
+</div>
